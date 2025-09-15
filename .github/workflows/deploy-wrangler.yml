@@ -24,6 +24,21 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Clean build cache
+        run: rm -rf .next/cache
+
+      - name: Compress large images
+        run: |
+          # 安裝 ImageMagick
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
+          # 壓縮所有超過 20MB 的 PNG 圖片
+          find out/images -name "*.png" -size +20M -exec magick {} -quality 85 -resize 2048x2048\> {} \;
+
+          # 檢查是否還有超過 25MB 的文件
+          find out -size +25M -type f -exec ls -lh {} \;
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
