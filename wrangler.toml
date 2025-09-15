@@ -1,0 +1,6 @@
+name = "homepage"
+compatibility_date = "2024-01-01"
+
+# Pages 配置
+[env.production]
+# 這個配置確保只部署 out 目錄

@@ -24,11 +24,11 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Clean build cache
-        run: rm -rf .next/cache
-
-      - name: Compress large images
+      - name: Clean build cache and prepare deployment
         run: |
+          # 完全移除 .next 目錄以避免部署時被掃描
+          rm -rf .next
+
           # 安裝 ImageMagick
           sudo apt-get update
           sudo apt-get install -y imagemagick
@@ -37,11 +37,19 @@ jobs:
           find out/images -name "*.png" -size +20M -exec magick {} -quality 85 -resize 2048x2048\> {} \;
 
           # 檢查是否還有超過 25MB 的文件
-          find out -size +25M -type f -exec ls -lh {} \;
+          echo "檢查大型文件："
+          find out -size +25M -type f -exec ls -lh {} \; || echo "沒有發現超過 25MB 的文件"
+
+          # 顯示 out 目錄內容和大小
+          echo "out 目錄大小："
+          du -sh out/
+          echo "out 目錄結構："
+          find out -type f | head -20
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=homepage
+        run: |
+          # 使用 npx 直接運行 wrangler，確保只部署 out 目錄
+          npx wrangler pages deploy out --project-name=homepage --compatibility-date=2024-01-01
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
