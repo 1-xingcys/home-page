@@ -1,3 +1,5 @@
+# .github/workflows/deploy.yml
+
 name: Deploy to Cloudflare Pages with Wrangler
 
 on:
@@ -15,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "18"
           cache: "npm"
 
       - name: Install dependencies
@@ -24,44 +26,17 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Clean build cache and prepare deployment
+      # --- 圖片壓縮等準備工作可以保留 ---
+      - name: Prepare deployment assets
         run: |
-          # 完全移除 .next 目錄以避免部署時被掃描
-          echo "在刪除 .next 目錄之前，列出根目錄內容："
-          ls -la
-
-          if [ -d ".next" ]; then
-            echo ".next 目錄存在，現在進行刪除..."
-            rm -rf .next
-            echo ".next 目錄已刪除。"
-          else
-            echo ".next 目錄不存在，無需刪除。"
-          fi
-
-          echo "在刪除 .next 目錄之後，再次列出根目錄內容："
-          ls -la
-
           # 安裝 ImageMagick
           sudo apt-get update
           sudo apt-get install -y imagemagick
-
-          # 壓縮所有超過 20MB 的 PNG 圖片
+          # 壓縮圖片 (可選)
           find out/images -name "*.png" -size +20M -exec magick {} -quality 85 -resize 2048x2048\> {} \;
 
-          # 檢查是否還有超過 25MB 的文件
-          echo "檢查大型文件："
-          find out -size +25M -type f -exec ls -lh {} \; || echo "沒有發現超過 25MB 的文件"
-
-          # 顯示 out 目錄內容和大小
-          echo "out 目錄大小："
-          du -sh out/
-          echo "out 目錄結構："
-          find out -type f | head -20
-
       - name: Deploy to Cloudflare Pages
-        run: |
-          # 使用 npx 直接運行 wrangler，確保只部署 out 目錄
-          npx wrangler pages deploy out --project-name=homepage --compatibility-date=2024-01-01
+        run: npx wrangler pages deploy # <--- 注意看這裡的變化！
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
