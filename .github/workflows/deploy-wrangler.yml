@@ -27,7 +27,19 @@ jobs:
       - name: Clean build cache and prepare deployment
         run: |
           # 完全移除 .next 目錄以避免部署時被掃描
-          rm -rf .next
+          echo "在刪除 .next 目錄之前，列出根目錄內容："
+          ls -la
+          
+          if [ -d ".next" ]; then
+            echo ".next 目錄存在，現在進行刪除..."
+            rm -rf .next
+            echo ".next 目錄已刪除。"
+          else
+            echo ".next 目錄不存在，無需刪除。"
+          fi
+          
+          echo "在刪除 .next 目錄之後，再次列出根目錄內容："
+          ls -la
 
           # 安裝 ImageMagick
           sudo apt-get update

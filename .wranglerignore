@@ -1,0 +1,9 @@
+# 忽略 Node.js 模組
+node_modules
+
+# 忽略 Next.js 的建置快取目錄
+.next
+
+# 忽略其他不需要的檔案
+.DS_Store
+*.log
