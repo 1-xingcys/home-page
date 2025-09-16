@@ -22,17 +22,30 @@ export default function Modal({
   showCloseButton = true,
   closeOnOverlayClick = true
 }: ModalProps) {
-  // 防止背景滾動
+  // 防止背景滾動 - iOS Safari 兼容版本
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
+      // 保存當前滾動位置
+      const scrollY = window.scrollY
 
-    // 清理函數
-    return () => {
-      document.body.style.overflow = 'unset'
+      // 設置 body 樣式來防止滾動
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.left = '0'
+      document.body.style.right = '0'
+      document.body.style.overflow = 'hidden'
+
+      return () => {
+        // 恢復原始狀態
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.left = ''
+        document.body.style.right = ''
+        document.body.style.overflow = ''
+
+        // 恢復滾動位置
+        window.scrollTo(0, scrollY)
+      }
     }
   }, [isOpen])
 
@@ -53,15 +66,39 @@ export default function Modal({
     }
   }, [isOpen, onClose])
 
+  // 防止 iOS Safari 背景滾動的額外處理
+  useEffect(() => {
+    if (isOpen) {
+      const preventScroll = (e: TouchEvent) => {
+        // 只有當觸摸事件不在 Modal 內容區域時才阻止
+        const target = e.target as Element
+        const modalContent = document.querySelector('[data-modal-content]')
+
+        if (modalContent && !modalContent.contains(target)) {
+          e.preventDefault()
+        }
+      }
+
+      document.addEventListener('touchmove', preventScroll, { passive: false })
+
+      return () => {
+        document.removeEventListener('touchmove', preventScroll)
+      }
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   return (
     <div
       className={twMerge(
         'fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center text-left p-4',
+        // iOS Safari 優化
+        'touch-none overscroll-none',
         overlayClassName
       )}
       onClick={closeOnOverlayClick ? onClose : undefined}
+      style={{ WebkitOverflowScrolling: 'touch' }}
     >
       <div
         className={twMerge(
@@ -82,7 +119,11 @@ export default function Modal({
         )}
 
         {/* Modal 內容 - 可滾動區域 */}
-        <div className="overflow-y-auto p-8">
+        <div
+          className="overflow-y-auto p-8 overscroll-contain"
+          data-modal-content
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           {children}
         </div>
       </div>
