@@ -1,11 +1,4 @@
 import { P } from '@/components/ui'
-import CustomLink from './ui/CustomLink'
-import {
-  EMAIL_ADDRESS,
-  GITHUB_URL,
-  LINKEDIN_URL,
-  INSTAGRAM_URL
-} from '@/constant/externalLinks'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
