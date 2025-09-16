@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
-import CustomLink from './CustomLink'
+import CustomLink from './ui/CustomLink'
 import { navigationItems } from '@/constant/navigationItem'
 
 interface SidebarProps {

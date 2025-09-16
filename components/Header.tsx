@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-import CustomLink from './CustomLink'
+import CustomLink from './ui/CustomLink'
 import { navigationItems } from '@/constant/navigationItem'
 import Sidebar from './Sidebar'
 

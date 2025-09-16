@@ -1,5 +1,5 @@
 import { P } from '@/components/ui'
-import CustomLink from './CustomLink'
+import CustomLink from './ui/CustomLink'
 import {
   EMAIL_ADDRESS,
   GITHUB_URL,

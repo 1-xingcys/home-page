@@ -3,7 +3,7 @@
 import { Container, Section, H1, H2, P, Flex, HorizontalSeparator, Lead, BulletList, ListItem, H4, LinkText, ImageCarousel, Card, H3 } from '@/components/ui'
 import StandardLayout from '@/components/StandardLayout'
 import Image from 'next/image'
-import CustomLink from '@/components/CustomLink'
+import CustomLink from '@/components/ui/CustomLink'
 import {
   NTUPDC_34_PERFORMANCE_CHEERS_URL,
   NTUPDC_34_PERFORMANCE_UNITY_URL,

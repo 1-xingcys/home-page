@@ -2,9 +2,9 @@
 
 import Image from 'next/image'
 import { Container, Section, H1, H2, P, GradientText, Card, Flex, IconBox } from '@/components/ui'
-import CustomLink from '@/components/CustomLink'
-import CopyButton from '@/components/CopyButton'
-import OpenLinkButton from '@/components/OpenLinkButton'
+import CustomLink from '@/components/ui/CustomLink'
+import CopyButton from '@/components/ui/Button/CopyButton'
+import OpenLinkButton from '@/components/ui/Button/OpenLinkButton'
 import StandardLayout from '@/components/StandardLayout'
 import {
   EMAIL_ADDRESS,
