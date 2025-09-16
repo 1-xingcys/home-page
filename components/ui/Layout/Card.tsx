@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Modal from './Modal'
+import Modal from '../Modal'
 
 interface CardProps {
   children: ReactNode

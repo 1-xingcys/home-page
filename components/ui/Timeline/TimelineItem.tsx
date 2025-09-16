@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Card from './Card'
+import Card from '../Layout/Card'
 
 interface TimelineItemProps {
   time: string
