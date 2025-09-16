@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import Card from '../Layout/Card'
+import { H2, H4, P } from '../Typography'
 
 interface TimelineItemProps {
   time: string
@@ -23,17 +24,17 @@ export default function TimelineItem({
 }: TimelineItemProps) {
   const cardContent = (
     <div className="space-y-3">
-      <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
+      <H4 className="font-bold text-white group-hover:text-blue-300 transition-colors">
         {title}
-      </h3>
+      </H4>
 
-      <p className="text-gray-300 leading-relaxed">
+      <P className="text-gray-300 leading-relaxed">
         {description}
-      </p>
+      </P>
 
       {/* 點擊提示 */}
       <div className="flex items-center text-sm text-gray-400 mt-4">
-        <span>點擊查看詳細內容</span>
+        <span>more...</span>
         <svg
           className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
           fill="none"
@@ -53,9 +54,9 @@ export default function TimelineItem({
         <div className="text-sm text-blue-400 font-semibold mb-2">
           {time}
         </div>
-        <h2 className="text-2xl font-bold text-white">
+        <H2 className="font-bold text-white">
           {title}
-        </h2>
+        </H2>
       </div>
 
       {/* Modal 內容 */}
@@ -124,13 +125,13 @@ export default function TimelineItem({
               modalClassName="max-w-4xl"
             >
               <div className={twMerge('space-y-3', isLeft ? 'text-right' : 'text-left')}>
-                <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
+                <H4 className="font-bold text-white group-hover:text-blue-300 transition-colors">
                   {title}
-                </h3>
+                </H4>
 
-                <p className="text-gray-300 leading-relaxed">
+                <P className="text-gray-300 leading-relaxed">
                   {description}
-                </p>
+                </P>
 
                 {/* 點擊提示 */}
                 <div className={twMerge(
