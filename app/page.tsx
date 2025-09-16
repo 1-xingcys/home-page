@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <HomeLayout>
       {/* 背景圖片占滿整個螢幕，包括 Header 區域 */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-[100svh] flex items-center justify-center overflow-hidden">
         {/* Background Image - 絕對定位，占滿整個視口 */}
         <div className="fixed inset-0 z-0">
           <Image
